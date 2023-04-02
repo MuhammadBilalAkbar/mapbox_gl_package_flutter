@@ -39,7 +39,7 @@ class PinOnMapPageState extends State<PinOnMapPage> {
           child: const Icon(Icons.add),
         ),
         const SizedBox(height: 5),
-        // Zoom out
+        // Zoom  out
         FloatingActionButton(
           heroTag: '2',
           onPressed: () {
