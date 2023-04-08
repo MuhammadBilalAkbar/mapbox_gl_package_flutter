@@ -113,7 +113,7 @@
   the [Configure credentials](https://docs.mapbox.com/android/maps/guides/install/#configure-credentials)
   in order to run android project here in flutter.
     - Don't generate public access token.
-    - Generate a secret access token with the *Downloads:Read* scope
+    - Generate a secret access token with the **Downloads:Read** scope
       from [here](https://account.mapbox.com/access-tokens/create).
       ![](screenshots/configuration/MapboxGLSecretKey.png)
     - You will use this secret key in `accessToken` property of `MapboxMap` widget in your flutter
@@ -123,11 +123,13 @@
       ![](screenshots/configuration/AddKeyInGradleProperties.png)
     - In the last, add location permission in manifest property of
       android/app/src/main/AndroidManifest.xml
-        ```xml
-  <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
-  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-        ```
+```xml
+
+<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+```
 
 as shown in image:
 ![](screenshots/configuration/Permissions.png)
