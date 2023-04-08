@@ -1,5 +1,3 @@
-// With light and dark mode
-
 import 'package:flutter/material.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 
@@ -20,7 +18,7 @@ class SimpleMapPage extends StatefulWidget {
 
 class SimpleMapPageState extends State<SimpleMapPage> {
   MapboxMapController? mapController;
-  var isLight = true;
+  bool isLight = true;
 
   onMapCreated(MapboxMapController controller) {
     mapController = controller;
@@ -37,28 +35,24 @@ class SimpleMapPageState extends State<SimpleMapPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: MapboxMap(
-        styleString: isLight ? MapboxStyles.LIGHT : MapboxStyles.DARK,
-        accessToken:
-            "sk.eyJ1IjoibXVoYW1tYWRiaWxhbDIwNzMiLCJhIjoiY2xmeXNiMjhhMDJzOTNnczd0a2U3a2dtMSJ9.l29smmvimCXGxwGqxCJiUQ",
-        onMapCreated: onMapCreated,
-        initialCameraPosition: const CameraPosition(
-          target: LatLng(37.755779, -122.415630),
-          zoom: 14,
+  Widget build(BuildContext context) => Scaffold(
+        body: MapboxMap(
+          styleString: isLight ? MapboxStyles.LIGHT : MapboxStyles.DARK,
+          accessToken:
+              "sk.eyJ1IjoibXVoYW1tYWRiaWxhbDIwNzMiLCJhIjoiY2xmeXNiMjhhMDJzOTNnczd0a2U3a2dtMSJ9.l29smmvimCXGxwGqxCJiUQ",
+          onMapCreated: onMapCreated,
+          initialCameraPosition: const CameraPosition(
+            target: LatLng(37.755779, -122.415630),
+            zoom: 14,
+          ),
+          onStyleLoadedCallback: onStyleLoadedCallback,
         ),
-        onStyleLoadedCallback: onStyleLoadedCallback,
-      ),
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.all(32.0),
-        child: FloatingActionButton(
-          child: const Icon(Icons.swap_horiz),
-          onPressed: () => setState(
-            () => isLight = !isLight,
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.all(32.0),
+          child: FloatingActionButton(
+            child: const Icon(Icons.swap_horiz),
+            onPressed: () => setState(() => isLight = !isLight),
           ),
         ),
-      ),
-    );
-  }
+      );
 }

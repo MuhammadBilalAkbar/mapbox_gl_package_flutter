@@ -1,5 +1,3 @@
-// With custom maps from mapbox website (monochrome, outdoor and street styles)
-
 import 'package:flutter/material.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 
@@ -26,38 +24,32 @@ class CustomizedMapState extends State<CustomizedMap> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: MapboxMap(
-        accessToken:
-            "sk.eyJ1IjoibXVoYW1tYWRiaWxhbDIwNzMiLCJhIjoiY2xmeXNiMjhhMDJzOTNnczd0a2U3a2dtMSJ9.l29smmvimCXGxwGqxCJiUQ",
-        styleString: currentStyle,
-        onMapCreated: onMapCreated,
-        initialCameraPosition: const CameraPosition(
-          target: LatLng(37.755779, -122.415630),
-          zoom: 14,
+  Widget build(BuildContext context) => Scaffold(
+        body: MapboxMap(
+          accessToken:
+              "sk.eyJ1IjoibXVoYW1tYWRiaWxhbDIwNzMiLCJhIjoiY2xmeXNiMjhhMDJzOTNnczd0a2U3a2dtMSJ9.l29smmvimCXGxwGqxCJiUQ",
+          styleString: currentStyle,
+          onMapCreated: onMapCreated,
+          initialCameraPosition: const CameraPosition(
+            target: LatLng(37.755779, -122.415630),
+            zoom: 14,
+          ),
         ),
-      ),
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.all(32.0),
-        // Change map styles
-        child: FloatingActionButton(
-          onPressed: () {
-            if (currentStyle == monochromeStyle) {
-              // setState(() {
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.all(32.0),
+          // Change map styles
+          child: FloatingActionButton(
+            onPressed: () {
+              if (currentStyle != monochromeStyle) {
+                currentStyle = monochromeStyle;
+                return;
+              }
               currentStyle = outdoorStyle;
-              // });
-            } else {
-              // setState(() {
-              currentStyle = monochromeStyle;
-              // });
-            }
-            setState(() {});
-          },
-          tooltip: 'Swap Monochrome and Street Style',
-          child: const Icon(Icons.swap_horizontal_circle),
+              setState(() {});
+            },
+            tooltip: 'Swap Monochrome and Street Style',
+            child: const Icon(Icons.swap_horizontal_circle),
+          ),
         ),
-      ),
-    );
-  }
+      );
 }

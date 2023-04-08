@@ -134,13 +134,184 @@
 as shown in image:
 ![](screenshots/configuration/Permissions.png)
 
-3. `main.dart` file is calling `MyApp` widget in `my_app.dart` file.
+4. New style of map can be created [here](https://studio.mapbox.com/).
+   ![](screenshots/configuration/Templates.png)<br/>
+   ![](screenshots/configuration/StylingOfTemplates.png)
+
+5. `main.dart` file is calling `MyApp` widget in `my_app.dart` file.
    <br/>All theming properties are defined in `MyApp` class.
    <br/>`MyApp` class is calling `HomePage` class from `home_page.dart` file.
-4. In `home_page.dart` file, there are three `ElevatedButton`s.
+6. In `home_page.dart` file, there are three `ElevatedButton`s.
 
 - Simple Map Page
 - Customized Map Page
 - Pin on Map Page
+  ![](screenshots/MapboxHomePage.PNG)
 
-5. In `simple_map_page.dart`
+5. `simple_map_page.dart` contains default settings of mapbox with light and dark mode.
+   ![](screenshots/SimpleMapPage.gif)
+
+- Before build, define following:
+
+```dart
+MapboxMapController? mapController;
+bool isLight = true;
+
+onMapCreated(MapboxMapController controller) {
+  mapController = controller;
+}
+
+onStyleLoadedCallback() {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: const Text("Style loaded :)"),
+      backgroundColor: Theme
+          .of(context)
+          .primaryColor,
+      duration: const Duration(seconds: 1),
+    ),
+  );
+}
+```
+
+*MapboxController* is used as a controller for `MapboxMap`.
+<br/>*isLight* boolean is used to change the theme from light to dark or dark to light.
+<br/>*onMapCreated* is assigned to the `onMapCreated` property of `MapboxMap`.
+<br/>*onStyleLoadedCallback* is assigned to the `onStyleLoadedCallback` property of `MapboxMap`. It
+shows snackbar when theme is changed using `isLight` variable and `setState(() {})`
+by `floatingActionButton`.
+
+- Write `MapboxMap` widget in the `body` of `Scaffold`.
+
+```dart 
+Scaffold(
+        body: MapboxMap(
+          styleString: isLight ? MapboxStyles.LIGHT : MapboxStyles.DARK,
+          accessToken:
+              "sk.eyJ1IjoibXVoYW1tYWRiaWxhbDIwNzMiLCJhIjoiY2xmeXNiMjhhMDJzOTNnczd0a2U3a2dtMSJ9.l29smmvimCXGxwGqxCJiUQ",
+          onMapCreated: onMapCreated,
+          initialCameraPosition: const CameraPosition(
+            target: LatLng(37.755779, -122.415630),
+            zoom: 14,
+          ),
+          onStyleLoadedCallback: onStyleLoadedCallback,
+        ),
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.all(32.0),
+          child: FloatingActionButton(
+            child: const Icon(Icons.swap_horiz),
+            onPressed: () => setState(
+              () => isLight = !isLight,
+            ),
+          ),
+        ),
+      );
+```
+
+- `initialCameraPosition` is required property of MapboxMap.
+- Assign secretKey to `accessToken` property of `MapboxMap`.
+- `initialCameraPosition` is where you want to appear on map when you open map for the first time.
+
+6. `customized_map_page.dart` is similar to `SimpleMapPage` but it contains different styles created
+   from studio of [mapbox website](https://studio.mapbox.com/) as mentioned in point #4.
+   ![](screenshots/CustomizedMapPage.gif)
+
+- Initialize the following strings:
+
+```dart
+
+String currentStyle =
+    'mapbox://styles/muhammadbilal2073/clfzfvkxv003401o8b036pipm';
+final monochromeStyle =
+    'mapbox://styles/muhammadbilal2073/clfzfvkxv003401o8b036pipm';
+final outdoorStyle =
+    'mapbox://styles/muhammadbilal2073/clfzf3f9w001b01qfmt3qbyq9';
+final streetStyle =
+    'mapbox://styles/muhammadbilal2073/clfzfqgby001f01p7p1cxu42u';
+```
+
+These are created on mapbox studio. `currentStyle` is set to `monochromeStyle`. Other styles
+are `outdoorStyle` and `streetStyle`. We change the style of Map using `FloatingActionButton`.
+
+```dart 
+    FloatingActionButton(
+          onPressed: () {
+            if (currentStyle != monochromeStyle) {
+              currentStyle = monochromeStyle;
+              return;
+            }
+            currentStyle = outdoorStyle;
+            setState(() {});
+          },
+          tooltip: 'Swap Monochrome and Street Style',
+          child: const Icon(Icons.swap_horizontal_circle),
+        ),
+```
+
+7. In `pin_on_map_page.dart` pins a point (add a marker) on map.
+
+- `PinOnMapPage` code is:
+
+```dart 
+    Scaffold(
+        body: createMap(),
+        floatingActionButton: buildFAB(),
+      );
+```
+
+- `buildFAB` method:
+
+```dart
+  Column buildFAB() {
+  return Column(
+    mainAxisAlignment: MainAxisAlignment.end,
+    children: [
+      // Zoom in
+      FloatingActionButton(
+        heroTag: '1',
+        onPressed: () => mapController?.animateCamera(CameraUpdate.zoomIn()),
+        child: const Icon(Icons.add),
+      ),
+      const SizedBox(height: 5),
+      // Zoom  out
+      FloatingActionButton(
+        heroTag: '2',
+        onPressed: () => mapController?.animateCamera(CameraUpdate.zoomOut()),
+        child: const Icon(Icons.remove),
+      ),
+    ],
+  );
+}
+```
+
+- `createMap` method:
+
+```dart
+  MapboxMap createMap() {
+  return MapboxMap(
+    accessToken:
+    "sk.eyJ1IjoibXVoYW1tYWRiaWxhbDIwNzMiLCJhIjoiY2xmeXNiMjhhMDJzOTNnczd0a2U3a2dtMSJ9.l29smmvimCXGxwGqxCJiUQ",
+    styleString: MapboxStyles.LIGHT,
+    onMapCreated: onMapCreated,
+    initialCameraPosition: const CameraPosition(
+      target: initialLatLng,
+      zoom: 14,
+    ),
+    // Pin on map
+    onMapLongClick: (_, latlong) {
+      mapController!.addSymbol(
+        SymbolOptions(
+          geometry: latlong,
+          textField: 'Selected place',
+          iconImage: 'attraction-15',
+          textOffset: const Offset(0, 2),
+        ),
+      );
+    },
+  );
+}
+```
+
+`onMapLongClick` is used here to add custom symbol, pointer or marker in map.
+`iconImage` can chosen
+from [https://github.com/mapbox/mapbox-gl-styles](https://github.com/mapbox/mapbox-gl-styles).

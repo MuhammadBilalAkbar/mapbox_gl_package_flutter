@@ -1,5 +1,3 @@
-// pin a point on map
-
 import 'package:flutter/material.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 
@@ -19,12 +17,10 @@ class PinOnMapPageState extends State<PinOnMapPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: createMap(),
-      floatingActionButton: buildFAB(),
-    );
-  }
+  Widget build(BuildContext context) => Scaffold(
+        body: createMap(),
+        floatingActionButton: buildFAB(),
+      );
 
   Column buildFAB() {
     return Column(
@@ -33,18 +29,14 @@ class PinOnMapPageState extends State<PinOnMapPage> {
         // Zoom in
         FloatingActionButton(
           heroTag: '1',
-          onPressed: () {
-            mapController?.animateCamera(CameraUpdate.zoomIn());
-          },
+          onPressed: () => mapController?.animateCamera(CameraUpdate.zoomIn()),
           child: const Icon(Icons.add),
         ),
         const SizedBox(height: 5),
         // Zoom  out
         FloatingActionButton(
           heroTag: '2',
-          onPressed: () {
-            mapController?.animateCamera(CameraUpdate.zoomOut());
-          },
+          onPressed: () => mapController?.animateCamera(CameraUpdate.zoomOut()),
           child: const Icon(Icons.remove),
         ),
       ],
@@ -57,21 +49,17 @@ class PinOnMapPageState extends State<PinOnMapPage> {
           "sk.eyJ1IjoibXVoYW1tYWRiaWxhbDIwNzMiLCJhIjoiY2xmeXNiMjhhMDJzOTNnczd0a2U3a2dtMSJ9.l29smmvimCXGxwGqxCJiUQ",
       styleString: MapboxStyles.LIGHT,
       onMapCreated: onMapCreated,
-      initialCameraPosition: const CameraPosition(
-        target: initialLatLng,
-        zoom: 14,
-      ),
+      initialCameraPosition:
+          const CameraPosition(target: initialLatLng, zoom: 14),
       // Pin on map
-      onMapLongClick: (_, latlang) {
-        mapController!.addSymbol(
-          SymbolOptions(
-            geometry: latlang,
-            textField: 'Selected place',
-            iconImage: 'attraction-15',
-            textOffset: const Offset(0, 2),
-          ),
-        );
-      },
+      onMapLongClick: (_, latlong) => mapController!.addSymbol(
+        SymbolOptions(
+          geometry: latlong,
+          textField: 'Selected place',
+          iconImage: 'attraction-15',
+          textOffset: const Offset(0, 2),
+        ),
+      ),
     );
   }
 }
