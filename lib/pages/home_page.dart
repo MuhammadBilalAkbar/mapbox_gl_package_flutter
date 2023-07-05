@@ -1,61 +1,59 @@
 import 'package:flutter/material.dart';
 
-import 'pin_on_map_page.dart';
 import 'customized_map_page.dart';
+import 'pin_on_map_page.dart';
 import 'simple_map_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<HomePage> createState() => HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class HomePageState extends State<HomePage> {
+  int selectedIndex = 0;
+
+  static const widgetOptions = <Widget>[
+    SimpleMapPage(),
+    CustomizedMapPage(),
+    PinOnMapPage(),
+  ];
+
+  void onItemTapped(int index) {
+    setState(() {
+      selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
           title: const Text('Mapbox GL Package Flutter'),
         ),
         body: Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: Column(
-              children: [
-                const SizedBox(height: 24),
-                ElevatedButton(
-                  onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const SimpleMapPage(),
-                    ),
-                  ),
-                  child: const Text('Simple Map Page'),
-                ),
-                const SizedBox(height: 24),
-                ElevatedButton(
-                  onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const CustomizedMap(),
-                    ),
-                  ),
-                  child: const Text('Customized Map Page'),
-                ),
-                const SizedBox(height: 24),
-                ElevatedButton(
-                  onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const PinOnMapPage(),
-                    ),
-                  ),
-                  child: const Text('Pin on Map Page'),
-                ),
-                const SizedBox(height: 24),
-              ],
+          child: widgetOptions.elementAt(selectedIndex),
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          iconSize: 36.0,
+          selectedFontSize: 18.0,
+          unselectedFontSize: 14.0,
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.map),
+              label: 'Simple Map',
             ),
-          ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.map_outlined),
+              label: 'Customized Map',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.pin_drop),
+              label: 'Pin on Map',
+            ),
+          ],
+          currentIndex: selectedIndex,
+          onTap: onItemTapped,
         ),
       );
 }

@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 
-class CustomizedMap extends StatefulWidget {
-  const CustomizedMap({super.key});
+class CustomizedMapPage extends StatefulWidget {
+  const CustomizedMapPage({super.key});
 
   @override
-  State createState() => CustomizedMapState();
+  State createState() => CustomizedMapPageState();
 }
 
-class CustomizedMapState extends State<CustomizedMap> {
+class CustomizedMapPageState extends State<CustomizedMapPage> {
   MapboxMapController? mapController;
+
+  final accessToken =
+      "sk.eyJ1IjoibXVoYW1tYWRiaWxhbDIwNzMiLCJhIjoiY2xmeXNiMjhhMDJzOTNnczd0a2U3a2dtMSJ9.l29smmvimCXGxwGqxCJiUQ";
+
   String currentStyle =
       'mapbox://styles/muhammadbilal2073/clfzfvkxv003401o8b036pipm';
   final monochromeStyle =
@@ -19,15 +23,12 @@ class CustomizedMapState extends State<CustomizedMap> {
   final streetStyle =
       'mapbox://styles/muhammadbilal2073/clfzfqgby001f01p7p1cxu42u';
 
-  onMapCreated(MapboxMapController controller) {
-    mapController = controller;
-  }
+  onMapCreated(MapboxMapController controller) => mapController = controller;
 
   @override
   Widget build(BuildContext context) => Scaffold(
         body: MapboxMap(
-          accessToken:
-              "sk.eyJ1IjoibXVoYW1tYWRiaWxhbDIwNzMiLCJhIjoiY2xmeXNiMjhhMDJzOTNnczd0a2U3a2dtMSJ9.l29smmvimCXGxwGqxCJiUQ",
+          accessToken: accessToken,
           styleString: currentStyle,
           onMapCreated: onMapCreated,
           initialCameraPosition: const CameraPosition(
@@ -40,12 +41,13 @@ class CustomizedMapState extends State<CustomizedMap> {
           // Change map styles
           child: FloatingActionButton(
             onPressed: () {
-              if (currentStyle != monochromeStyle) {
-                currentStyle = monochromeStyle;
-                return;
-              }
-              currentStyle = outdoorStyle;
-              setState(() {});
+              setState(() {
+                if (currentStyle != monochromeStyle) {
+                  currentStyle = monochromeStyle;
+                  return;
+                }
+                currentStyle = outdoorStyle;
+              });
             },
             tooltip: 'Swap Monochrome and Street Style',
             child: const Icon(Icons.swap_horizontal_circle),

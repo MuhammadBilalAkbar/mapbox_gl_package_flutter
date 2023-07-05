@@ -20,9 +20,10 @@ class SimpleMapPageState extends State<SimpleMapPage> {
   MapboxMapController? mapController;
   bool isLight = true;
 
-  onMapCreated(MapboxMapController controller) {
-    mapController = controller;
-  }
+  onMapCreated(MapboxMapController controller) => mapController = controller;
+
+  final accessToken =
+      "sk.eyJ1IjoibXVoYW1tYWRiaWxhbDIwNzMiLCJhIjoiY2xmeXNiMjhhMDJzOTNnczd0a2U3a2dtMSJ9.l29smmvimCXGxwGqxCJiUQ";
 
   onStyleLoadedCallback() {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -38,8 +39,7 @@ class SimpleMapPageState extends State<SimpleMapPage> {
   Widget build(BuildContext context) => Scaffold(
         body: MapboxMap(
           styleString: isLight ? MapboxStyles.LIGHT : MapboxStyles.DARK,
-          accessToken:
-              "sk.eyJ1IjoibXVoYW1tYWRiaWxhbDIwNzMiLCJhIjoiY2xmeXNiMjhhMDJzOTNnczd0a2U3a2dtMSJ9.l29smmvimCXGxwGqxCJiUQ",
+          accessToken: accessToken,
           onMapCreated: onMapCreated,
           initialCameraPosition: const CameraPosition(
             target: LatLng(37.755779, -122.415630),

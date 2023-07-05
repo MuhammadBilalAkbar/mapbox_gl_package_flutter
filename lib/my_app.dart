@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'pages/home_page.dart';
 
 class MyApp extends StatelessWidget {
@@ -13,17 +12,10 @@ class MyApp extends StatelessWidget {
           appBarTheme: const AppBarTheme(
             centerTitle: true,
             titleTextStyle: TextStyle(
-              fontSize: 30.0,
+              fontSize: 24.0,
               fontWeight: FontWeight.bold,
             ),
             iconTheme: IconThemeData(color: Colors.white),
-          ),
-          textTheme: const TextTheme(
-            labelLarge: TextStyle(fontSize: 30),
-            titleMedium: TextStyle(fontSize: 30),
-            bodySmall: TextStyle(fontSize: 30),
-            bodyLarge: TextStyle(fontSize: 30),
-            bodyMedium: TextStyle(fontSize: 25),
           ),
           elevatedButtonTheme: ElevatedButtonThemeData(
             style: ElevatedButton.styleFrom(
@@ -33,7 +25,7 @@ class MyApp extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
               ),
               textStyle:
-                  const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                  const TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
             ),
           ),
         ),
